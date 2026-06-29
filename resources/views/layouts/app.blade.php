@@ -31,6 +31,23 @@
     <link href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css" rel="stylesheet">
     
     <style>
+        /* PWA Native App Styling */
+        html, body {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            overscroll-behavior-y: none;
+        }
+        
+        /* Safe Area Support for Notch Devices */
+        @supports (padding: max(0px)) {
+            body {
+                padding-left: max(0px, env(safe-area-inset-left));
+                padding-right: max(0px, env(safe-area-inset-right));
+                padding-top: max(0px, env(safe-area-inset-top));
+                padding-bottom: max(0px, env(safe-area-inset-bottom));
+            }
+        }
+        
         /* Custom Sidebar Styling */
         .sidebar-dark-primary {
             background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%) !important;
