@@ -37,6 +37,16 @@ Route::get('/download-app', function() {
     return response('APK file not found', 404);
 })->name('download-app');
 
+// PWA Offline Route
+Route::get('/offline', function() {
+    return view('offline');
+})->name('offline');
+
+// API Ping for offline detection
+Route::get('/api/ping', function() {
+    return response()->json(['status' => 'online']);
+})->name('api.ping');
+
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');

@@ -18,6 +18,9 @@ use App\Http\Controllers\Api\AuthController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+// PWA FCM Token Registration
+Route::post('/fcm-token', [AuthController::class, 'registerFcmToken'])->middleware('auth');
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
