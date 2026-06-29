@@ -4,6 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nepal Restaurant SaaS - Complete Restaurant Management System</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#E53935">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Nepal Restaurant">
+    <meta name="description" content="Complete Restaurant Management System for Nepal">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- PWA Icons -->
+    <link rel="icon" type="image/svg+xml" sizes="192x192" href="/icons/icon-192x192.svg">
+    <link rel="icon" type="image/svg+xml" sizes="512x512" href="/icons/icon-512x512.svg">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.svg">
+    <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.svg">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -40,6 +58,10 @@
                     <a href="#contact" class="text-gray-600 hover:text-orange-500 transition">Contact</a>
                 </div>
                 <div class="flex items-center space-x-4">
+                    <button id="pwa-install-button" class="hidden bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2.5 rounded-xl font-semibold hover:shadow-lg transition flex items-center space-x-2">
+                        <i class="fas fa-download"></i>
+                        <span>Install App</span>
+                    </button>
                     <a href="/login" class="text-gray-600 hover:text-orange-500 font-medium">Login</a>
                     <a href="/register" class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition">Get Started</a>
                 </div>
@@ -643,5 +665,65 @@
             </div>
         </div>
     </footer>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                        
+                        // Check for updates
+                        registration.addEventListener('updatefound', function() {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', function() {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // Show update notification
+                                    if (confirm('A new version is available. Would you like to update?')) {
+                                        newWorker.postMessage({ type: 'SKIP_WAITING' });
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        const installButton = document.getElementById('pwa-install-button');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (installButton) {
+                installButton.style.display = 'block';
+            }
+        });
+
+        if (installButton) {
+            installButton.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    deferredPrompt = null;
+                    if (outcome === 'accepted') {
+                        installButton.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('appinstalled', () => {
+            if (installButton) {
+                installButton.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>

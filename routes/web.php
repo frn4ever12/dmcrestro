@@ -28,6 +28,43 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingPageController::class, 'index']);
 
+// PWA Manifest Route
+Route::get('/manifest.json', function() {
+    $filePath = public_path('manifest.json');
+    if (file_exists($filePath)) {
+        return response()->file($filePath, ['Content-Type' => 'application/manifest+json']);
+    }
+    return response('Manifest file not found', 404);
+});
+
+// PWA Manifest Route (legacy path)
+Route::get('/public/manifest.json', function() {
+    $filePath = public_path('manifest.json');
+    if (file_exists($filePath)) {
+        return response()->file($filePath, ['Content-Type' => 'application/manifest+json']);
+    }
+    return response('Manifest file not found', 404);
+});
+
+// PWA Service Worker Route
+Route::get('/sw.js', function() {
+    $filePath = public_path('sw.js');
+    headers_sent() || header('Content-Type: application/javascript');
+    if (file_exists($filePath)) {
+        return response()->file($filePath, ['Content-Type' => 'application/javascript']);
+    }
+    return response('Service Worker file not found', 404);
+});
+
+// PWA Icons Routes
+Route::get('/icons/{filename}', function($filename) {
+    $filePath = public_path('icons/' . $filename);
+    if (file_exists($filePath)) {
+        return response()->file($filePath, ['Content-Type' => 'image/svg+xml']);
+    }
+    return response('Icon file not found', 404);
+});
+
 // Mobile App Download Route
 Route::get('/download-app', function() {
     $filePath = public_path('downloads/nepal-restaurant-saas.apk');
