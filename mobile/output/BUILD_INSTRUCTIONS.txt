@@ -1,0 +1,90 @@
+================================================================================
+NEPAL RESTAURANT SAAS - APK BUILD INSTRUCTIONS
+================================================================================
+
+CURRENT STATUS: Placeholder APK file (requires Flutter SDK to build real APK)
+
+================================================================================
+REQUIREMENTS TO BUILD REAL APK
+================================================================================
+
+1. Flutter SDK (Required)
+   - Download: https://docs.flutter.dev/get-started/install/windows
+   - Install to: C:\flutter or your preferred location
+   - Add to PATH: Add C:\flutter\bin to system environment variables
+
+2. Android SDK (Required)
+   - Included with Android Studio
+   - Or install Android SDK separately
+   - Minimum API level: 21 (Android 5.0)
+
+3. Java Development Kit (Required)
+   - JDK 8 or higher
+   - Download: https://www.oracle.com/java/technologies/downloads/
+
+================================================================================
+BUILD STEPS
+================================================================================
+
+Option 1: Using Build Script (Recommended)
+-------------------------------------------
+1. Install Flutter SDK
+2. Open Command Prompt in mobile folder
+3. Run: build-apk.bat
+4. APK will be generated at: output\nepal-restaurant-saas.apk
+
+Option 2: Manual Build
+----------------------
+1. Install Flutter SDK
+2. Open Command Prompt in mobile folder
+3. Run: flutter pub get
+4. Run: flutter build apk --release
+5. Copy from: build\app\outputs\flutter-apk\app-release.apk
+6. To: output\nepal-restaurant-saas.apk
+
+================================================================================
+ALTERNATIVE: CLOUD BUILD SERVICES
+================================================================================
+
+If you cannot install Flutter locally, use these services:
+
+1. Codemagic (codemagic.io)
+   - Free tier available
+   - Connect to GitHub repository
+   - Automatic APK builds
+
+2. GitHub Actions
+   - Add .github/workflows/flutter-build.yml
+   - Automatic builds on push
+
+3. Bitrise (bitrise.io)
+   - Free tier available
+   - Easy Flutter integration
+
+================================================================================
+CURRENT FILE STRUCTURE
+================================================================================
+
+mobile/
+├── build-apk.bat          # Windows build script
+├── build-apk.sh           # Mac/Linux build script  
+├── output/
+│   ├── nepal-restaurant-saas.apk    # Placeholder (replace with real APK)
+│   ├── BUILD_INSTRUCTIONS.txt       # This file
+│   └── README.md                    # Documentation
+├── lib/                    # Flutter source code
+├── pubspec.yaml            # Flutter dependencies
+└── README.md               # Project documentation
+
+================================================================================
+INTEGRATION WITH LARAVEL BACKEND
+================================================================================
+
+Before building, configure API URL in: lib/core/constants/app_constants.dart
+
+Change:
+  static const String baseUrl = 'http://your-api-url.com/api';
+
+To your Laravel backend URL (e.g., http://127.0.0.1:8000/api)
+
+================================================================================

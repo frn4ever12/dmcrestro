@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nepal_restaurant_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - nepal_restaurant_network
+
+  nginx:
+    image: nginx:alpine
+    container_name: nepal_restaurant_nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - nepal_restaurant_network
+    depends_on:
+      - app
+
+  mysql:
+    image: mysql:8.0
+    container_name: nepal_restaurant_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: nepal_restaurant_saas
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: nepal_user
+      MYSQL_PASSWORD: nepal_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - nepal_restaurant_network
+
+  redis:
+    image: redis:alpine
+    container_name: nepal_restaurant_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - nepal_restaurant_network
+
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nepal_restaurant_queue
+    restart: unless-stopped
+    working_dir: /var/www/html
+    command: php artisan queue:work --sleep=3 --tries=3
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - nepal_restaurant_network
+    depends_on:
+      - app
+      - redis
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nepal_restaurant_scheduler
+    restart: unless-stopped
+    working_dir: /var/www/html
+    command: php artisan schedule:work
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - nepal_restaurant_network
+    depends_on:
+      - app
+
+networks:
+  nepal_restaurant_network:
+    driver: bridge
+
+volumes:
+  mysql_data:

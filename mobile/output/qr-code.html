@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nepal Restaurant SaaS - APK QR Code</title>
+    <script src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=file:///C:/Users/Lenovo/CascadeProjects/nepal-restaurant-saas/mobile/output/nepal-restaurant-saas.apk" id="qr-api"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 500px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        #qrcode {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+        }
+        #qrcode img {
+            border: 5px solid #667eea;
+            border-radius: 10px;
+            max-width: 256px;
+        }
+        .info {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: left;
+        }
+        .info-item {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #667eea;
+        }
+        .button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        .button:hover {
+            background: #764ba2;
+        }
+        .note {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #999;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍽️ Nepal Restaurant SaaS</h1>
+        <p class="subtitle">Mobile App Download</p>
+        
+        <div id="qrcode">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=http://127.0.0.1:8000/download-app" alt="QR Code" id="qr-image" crossorigin="anonymous">
+        </div>
+        
+        <div class="info">
+            <div class="info-item">
+                <span class="info-label">App Name:</span> Nepal Restaurant SaaS
+            </div>
+            <div class="info-item">
+                <span class="info-label">Version:</span> 1.0.0
+            </div>
+            <div class="info-item">
+                <span class="info-label">File Size:</span> 48.0 MB
+            </div>
+            <div class="info-item">
+                <span class="info-label">File:</span> nepal-restaurant-saas.apk
+            </div>
+        </div>
+        
+        <button class="button" onclick="downloadQRCode()">Download QR Code</button>
+        
+        <p class="note">Scan this QR code with your Android device to download the APK file.<br>
+        Make sure the APK file is hosted on a server or shared via a file sharing service.</p>
+    </div>
+
+    <script>
+        function downloadQRCode() {
+            const img = document.getElementById('qr-image');
+            if (!img || !img.complete) {
+                alert('QR code not loaded yet. Please wait...');
+                return;
+            }
+            
+            // Create canvas to convert image to downloadable format
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            
+            // Draw image to canvas
+            ctx.drawImage(img, 0, 0, 256, 256);
+            
+            try {
+                const link = document.createElement('a');
+                link.download = 'nepal-restaurant-saas-qr.png';
+                link.href = canvas.toDataURL('image/png');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (error) {
+                console.error('Download failed:', error);
+                // Fallback: open image in new tab
+                window.open(img.src, '_blank');
+                alert('Download failed. The QR code has opened in a new tab. Right-click and save it.');
+            }
+        }
+    </script>
+</body>
+</html>
