@@ -1,8 +1,10 @@
 class AppConstants {
   // API Configuration
+  // For production, set API_BASE_URL environment variable when building:
+  // flutter build apk --dart-define=API_BASE_URL=https://esb.dmcgroupnp.com/api
   static const String baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://localhost:8000/api',
+    defaultValue: 'https://esb.dmcgroupnp.com/api',
   );
 
   static const String apiVersion = 'v1';
