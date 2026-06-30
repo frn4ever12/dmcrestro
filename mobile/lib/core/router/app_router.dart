@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../constants/app_constants.dart';
 import '../services/auth_service.dart';
+import '../../screens/webview_screen.dart';
 import '../../screens/auth/login_screen.dart';
 import '../../screens/auth/register_screen.dart';
 import '../../screens/owner/owner_dashboard_screen.dart';
@@ -14,9 +15,14 @@ import '../../screens/customer/customer_dashboard_screen.dart';
 class AppRouter {
   static GoRouter router(AuthService authService) {
     return GoRouter(
-      initialLocation: '/login',
+      initialLocation: '/',
       refreshListenable: GoRouterRefreshStream(authService.stream),
       routes: [
+        GoRoute(
+          path: '/',
+          name: 'home',
+          builder: (context, state) => const WebViewScreen(),
+        ),
         GoRoute(
           path: '/login',
           name: 'login',

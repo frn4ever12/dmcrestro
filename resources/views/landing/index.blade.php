@@ -43,6 +43,45 @@
             }
         }
         
+        /* PWA Splash Screen */
+        #pwa-splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #E53935;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        #pwa-splash.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .splash-logo {
+            font-size: 80px;
+            color: white;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        
+        .splash-text {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
         * { font-family: 'Poppins', sans-serif; }
         .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         .hero-pattern { background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
@@ -55,6 +94,12 @@
     </style>
 </head>
 <body class="bg-gray-50">
+    <!-- PWA Splash Screen -->
+    <div id="pwa-splash">
+        <i class="fas fa-utensils splash-logo"></i>
+        <div class="splash-text">Nepal Restaurant</div>
+    </div>
+    
     <!-- Navigation -->
     <nav class="fixed w-full bg-white/95 backdrop-blur-sm shadow-sm z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -740,6 +785,19 @@
             if (installButton) {
                 installButton.style.display = 'none';
             }
+        });
+
+        // Hide Splash Screen
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const splash = document.getElementById('pwa-splash');
+                if (splash) {
+                    splash.classList.add('hidden');
+                    setTimeout(function() {
+                        splash.remove();
+                    }, 500);
+                }
+            }, 2000);
         });
     </script>
 </body>
